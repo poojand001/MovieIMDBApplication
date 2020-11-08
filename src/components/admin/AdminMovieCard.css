@@ -1,0 +1,26 @@
+.checked {
+    color: orange;
+}
+
+#cardmovie {
+    background-image: url('../../images/cardbackground.jpg');
+}
+
+#movie-rating {
+    margin-left: 5px;
+    color: white;
+}
+
+#card-text-color {
+    color: white;
+}
+
+#card-container {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#edit-movie {
+    float: right;
+    cursor: pointer;
+}
