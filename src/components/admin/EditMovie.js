@@ -154,22 +154,26 @@ class EditMovie extends Component {
                   }
                 />{" "}
               </Form.Group>{" "}
-              <Autocomplete
-                multiple
-                id="tags-outlined"
-                options={this.state.genreoptions}
-                defaultValue={this.state.defaultvalue}
-                onChange={this.handlegenrelist}
-                filterSelectedOptions
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="All Genres list"
-                    placeholder="Genres"
-                  />
-                )}
-              />{" "}
+              {this.state.semaphore ? (
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={this.state.genreoptions}
+                  defaultValue={this.state.defaultvalue}
+                  onChange={this.handlegenrelist}
+                  filterSelectedOptions
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="All Genres list"
+                      placeholder="Genres"
+                    />
+                  )}
+                />
+              ) : (
+                ""
+              )}{" "}
               <Form.Input
                 fluid
                 label="Add Genre"
