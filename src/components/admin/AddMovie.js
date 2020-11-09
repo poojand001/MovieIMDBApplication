@@ -103,7 +103,6 @@ class AddMovie extends Component {
                   label="Director Name"
                   placeholder="Director name"
                   required
-                  defaultValue={this.state.Director}
                   onChange={(event, newValue) =>
                     this.setState({ Director: newValue.value })
                   }
@@ -113,7 +112,6 @@ class AddMovie extends Component {
                   label="Popularity"
                   placeholder="Popularity"
                   required
-                  defaultValue={this.state.Popularity}
                   onChange={(event, newValue) =>
                     this.setState({ Popularity: newValue.value })
                   }
@@ -123,7 +121,6 @@ class AddMovie extends Component {
                   label="IMDB_Score"
                   placeholder="IMDB_SCore"
                   required
-                  defaultValue={this.state.IMDB_Score}
                   onChange={(event, newValue) =>
                     this.setState({ IMDB_Score: newValue.value })
                   }
