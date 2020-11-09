@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Modal, Form, Icon } from "semantic-ui-react";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, Alert } from "@material-ui/lab";
 import { TextField } from "@material-ui/core";
 import axios from "axios";
+import FlashMessage from "react-flash-message";
 class EditMovie extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +19,7 @@ class EditMovie extends Component {
       newGenrelist: [],
       message: "",
       semaphore: false,
+      success: false,
     };
     this.handlegenrelist = this.handlegenrelist.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,12 +40,19 @@ class EditMovie extends Component {
         movieid: this.props.moviedetails.Id,
       })
       .then((res) => {
-        this.setState({ open: false });
-        this.props.action();
+        this.setState({
+          success: true,
+          message: `Successfully deleted ${this.props.moviedetails.Name} `,
+        });
+        setTimeout(() => {
+          this.setState({ open: false });
+          this.props.action();
+        }, 3000);
       })
       .catch((res) =>
         comp.setState({
-          message: res.message,
+          message: "Unable to delete the movie",
+          success: false,
         })
       );
   }
@@ -63,12 +72,18 @@ class EditMovie extends Component {
       .then((res) => {
         comp.setState({
           message: `Successfully updated the ${this.props.moviedetails.Name}`,
-          open: false,
+          success: true,
         });
-        this.props.action();
+        setTimeout(() => {
+          comp.setState({ open: false, message: "" });
+          comp.props.action();
+        }, 3000);
       })
       .catch((res) => {
-        comp.setState({ message: res.message });
+        comp.setState({
+          message: "Unable to update the details",
+          success: false,
+        });
       });
   }
   componentDidUpdate() {
@@ -174,6 +189,16 @@ class EditMovie extends Component {
                 </Form.Button>{" "}
               </Form.Group>{" "}
             </Form>{" "}
+            {this.state.message !== "" ? (
+              <FlashMessage dureation={3000}>
+                <Alert severity={this.state.success ? "success" : "error"}>
+                  {" "}
+                  {this.state.message}{" "}
+                </Alert>{" "}
+              </FlashMessage>
+            ) : (
+              ""
+            )}{" "}
           </Modal.Description>{" "}
         </Modal.Content>{" "}
       </Modal>

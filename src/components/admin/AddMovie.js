@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Modal, Form, Button } from "semantic-ui-react";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, Alert } from "@material-ui/lab";
 import { TextField } from "@material-ui/core";
 import axios from "axios";
+import FlashMessage from "react-flash-message";
 class AddMovie extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +20,7 @@ class AddMovie extends Component {
       message: "",
       newMovie: "",
       semaphore: false,
+      success: false,
     };
     this.handlegenrelist = this.handlegenrelist.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,12 +49,15 @@ class AddMovie extends Component {
       .then((res) => {
         comp.setState({
           message: `Successfully added the ${this.state.newMovie}`,
-          open: false,
+          success: true,
         });
-        this.props.action();
+        setTimeout(() => {
+          this.setState({ open: false, message: "" });
+          this.props.action();
+        }, 3000);
       })
       .catch((res) => {
-        comp.setState({ message: res.message });
+        comp.setState({ message: "Unable to add the movie", success: false });
       });
   }
   componentDidUpdate() {
@@ -155,6 +160,16 @@ class AddMovie extends Component {
                 </Form.Button>{" "}
               </Form.Group>{" "}
             </Form>{" "}
+            {this.state.message !== "" ? (
+              <FlashMessage dureation={3000}>
+                <Alert severity={this.state.success ? "success" : "error"}>
+                  {" "}
+                  {this.state.message}{" "}
+                </Alert>{" "}
+              </FlashMessage>
+            ) : (
+              ""
+            )}{" "}
           </Modal.Description>{" "}
         </Modal.Content>{" "}
       </Modal>

@@ -8,6 +8,7 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
+import Alert from "@material-ui/lab/Alert";
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class Register extends Component {
       emailid: "",
       password: "",
       username: "",
+      success: "",
     };
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -39,61 +41,82 @@ class Register extends Component {
         username: this.state.username,
       })
       .then((res) => {
-        this.setState({ message: "Successfully added" });
-        this.props.history.push("/login");
+        this.setState({
+          message: "Successfully added the admin",
+          success: true,
+        });
+        setTimeout(() => {
+          this.props.history.push("/login");
+        }, 2000);
       })
-      .catch((res) => this.setState({ message: res.message }));
+      .catch((res) =>
+        this.setState({ message: "Unable to add the user", success: false })
+      );
   }
   render() {
     return (
-      <Grid
-        textAlign="center"
-        style={{ height: "100vh" }}
-        verticalAlign="middle"
-      >
-        <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" color="teal" textAlign="center">
-            Register - (Only for admins){" "}
-          </Header>{" "}
-          <Form size="large">
-            <Segment stacked>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="User Name"
-                onChange={this.handleUsernameChange}
-              />{" "}
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="E-mail address"
-                onChange={this.handleEmailChange}
-              />{" "}
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                type="password"
-                onChange={this.handlePasswordChange}
-              />
-              <Button
-                color="teal"
-                fluid
-                size="large"
-                onClick={this.handleRegister}
-              >
-                Register{" "}
-              </Button>{" "}
-            </Segment>{" "}
-          </Form>{" "}
-          <Message>
-            Already have an account ? <a href="/login"> Login </a>{" "}
-          </Message>{" "}
-        </Grid.Column>{" "}
-      </Grid>
+      <React.Fragment>
+        {" "}
+        {this.state.message !== "" ? (
+          <Alert severity={this.state.success ? "success" : "error"}>
+            {" "}
+            {this.state.message}{" "}
+          </Alert>
+        ) : (
+          ""
+        )}{" "}
+        <Grid
+          textAlign="center"
+          style={{ height: "100vh" }}
+          verticalAlign="middle"
+        >
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Header as="h2" color="teal" textAlign="center">
+              Register - (Only for admins){" "}
+            </Header>{" "}
+            <Form size="large">
+              <Segment stacked>
+                <Form.Input
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="User Name"
+                  required
+                  onChange={this.handleUsernameChange}
+                />{" "}
+                <Form.Input
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="E-mail address"
+                  required
+                  onChange={this.handleEmailChange}
+                />{" "}
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  type="password"
+                  required
+                  onChange={this.handlePasswordChange}
+                />{" "}
+                <Button
+                  color="teal"
+                  fluid
+                  size="large"
+                  onClick={this.handleRegister}
+                >
+                  Register{" "}
+                </Button>{" "}
+              </Segment>{" "}
+            </Form>{" "}
+            <Message>
+              Already have an account ? <a href="/login"> Login </a>{" "}
+            </Message>{" "}
+          </Grid.Column>{" "}
+        </Grid>{" "}
+      </React.Fragment>
     );
   }
 }
